@@ -203,7 +203,7 @@ export default function TenantApplication() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 rounded-md transition-colors"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-md transition-colors"
           >
             {loading ? 'Submitting…' : 'Submit Application'}
           </button>
