@@ -16,7 +16,7 @@ export default function ApplicationsPage() {
 
   const loadData = async () => {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return setError('Not authenticated')
+    if (!user) return setError('Please log in to view applications')
     
     const res = await fetch(`${window.location.origin}/api/landlord/applications?userId=${user.id}`)
     const data = await res.json()
