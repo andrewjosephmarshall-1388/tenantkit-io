@@ -99,8 +99,8 @@ export default function PropertiesPage() {
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h1 style={{ fontSize: '1.5rem' }}>My Properties</h1>
-        <Link href="/dashboard/properties/new" style={{ display: 'inline-flex', alignItems: 'center', background: '#2563eb', color: '#fff', padding: '0.5rem 1rem', borderRadius: '0.375rem', textDecoration: 'none' }}>
-          <Plus size={16} style={{ marginRight: '0.25rem' }} />Add Property
+        <Link href="/dashboard/properties/new" className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
+          <Plus size={16} className="mr-1" />Add Property
         </Link>
       </div>
 
@@ -163,7 +163,7 @@ export default function PropertiesPage() {
                       <ul style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
                         {prop.applications.map((app: any) => (
                           <li key={app.id}>
-                            Status: {app.status} – <Link href={`/dashboard/applications/${app.id}`} style={{ color: '#2563eb' }}>View</Link>
+                            Status: {app.status} – <Link href={`/dashboard/applications/${app.id}`} className="text-green-600 hover:underline">View</Link>
                           </li>
                         ))}
                       </ul>
@@ -171,7 +171,7 @@ export default function PropertiesPage() {
                   ) : (
                     <p style={{ fontSize: '0.875rem', color: '#6B7280', marginTop: '0.5rem' }}>No applications yet.</p>
                   )}
-                  <Link href={`/dashboard/properties/${prop.id}`} style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.875rem', color: '#2563eb' }}>
+                  <Link href={`/dashboard/properties/${prop.id}`} className="inline-block mt-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-3 py-1 rounded-md">
                     View Details →
                   </Link>
                 </div>

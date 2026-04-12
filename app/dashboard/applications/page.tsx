@@ -87,9 +87,9 @@ export default function ApplicationsPage() {
                   </span>
                 </div>
               </div>
-              <Link 
+              <Link
                 href={`/dashboard/applications/${app.id}`}
-                style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: '0.875rem', color: '#2563EB' }}
+                className="inline-block mt-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
               >
                 View Details →
               </Link>

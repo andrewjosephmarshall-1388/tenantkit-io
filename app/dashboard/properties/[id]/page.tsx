@@ -45,7 +45,7 @@ export default function PropertyDetailPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
-      <Link href="/dashboard/properties" style={{ color: '#2563eb', textDecoration: 'none' }}>← Back to Properties</Link>
+      <Link href="/dashboard/properties" className="text-green-600 hover:underline">← Back to Properties</Link>
       
       <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: '#fff', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 600 }}>{property.address} {property.unit && `(${property.unit})`}</h1>
@@ -66,7 +66,7 @@ export default function PropertyDetailPage() {
         </div>
 
         <div style={{ marginTop: '1.5rem' }}>
-          <Link href={`/dashboard/properties/${propertyId}/forms`} style={{ display: 'inline-block', padding: '0.5rem 1rem', background: '#2563eb', color: '#fff', borderRadius: '0.375rem', textDecoration: 'none' }}>
+          <Link href={`/dashboard/properties/${propertyId}/forms`} className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
             Manage Forms
           </Link>
         </div>
