@@ -82,7 +82,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
           >
             <Download size={16} style={{ marginRight: '0.25rem' }} />Download PDF
           </button>
-          <Link href={`/dashboard/tenant/deficiencies/${appId}`} style={{ marginLeft: '0.5rem', background: '#ff8c00', color: '#fff', padding: '0.4rem 0.8rem', borderRadius: '0.375rem', textDecoration: 'none' }}>Report Issue</Link>
+          <Link href={`/dashboard/tenant/inspection/${appId}`} className="ml-2 bg-orange-600 hover:bg-orange-700 text-white py-1 px-2 rounded">Move‑In Inspection</Link>
         </div>
 
         <div style={{ marginBottom: '1.5rem' }}>
