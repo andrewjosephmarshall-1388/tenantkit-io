@@ -45,7 +45,7 @@ export default function PropertyDetailPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
-      <Link href="/dashboard/properties" className="text-green-600 hover:underline">← Back to Properties</Link>
+      <Link href="/dashboard/properties" className="text-gray-800 hover:underline">← Back to Properties</Link>
       
       <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: '#fff', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 600 }}>{property.address} {property.unit && `(${property.unit})`}</h1>
@@ -56,7 +56,7 @@ export default function PropertyDetailPage() {
           {application ? (
             <div>
               <p style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>Status: <span style={{ fontWeight: 600, color: application.status === 'complete' ? '#10B981' : '#F59E0B' }}>{application.status}</span></p>
-              <a href={`${window.location.origin}/apply/${application.token}`} target="_blank" rel="noopener noreferrer" style={{ display: 'block', marginTop: '0.5rem', color: '#2563eb', wordBreak: 'break-all' }}>
+              <a href={`${window.location.origin}/apply/${application.token}`} target="_blank" rel="noopener noreferrer" className="block mt-2 text-green-600 hover:underline break-all" >
                 {window.location.origin}/apply/{application.token}
               </a>
             </div>

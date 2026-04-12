@@ -63,7 +63,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
 
   return (
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
-      <Link href="/dashboard/applications" style={{ color: '#2563eb', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>← Back to Applications</Link>
+      <Link href="/dashboard/applications" className="text-green-600 hover:underline inline-block mb-4">← Back to Applications</Link>
       <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h1 style={{ fontSize: '1.5rem' }}>Application Details</h1>
@@ -78,7 +78,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
               const url = URL.createObjectURL(blob)
               window.open(url, '_blank')
             }}
-            style={{ display: 'inline-flex', alignItems: 'center', background: '#2563eb', color: '#fff', padding: '0.5rem 1rem', borderRadius: '0.375rem', border: 'none', cursor: 'pointer' }}
+            className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
           >
             <Download size={16} style={{ marginRight: '0.25rem' }} />Download PDF
           </button>
@@ -93,7 +93,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
 
         <div style={{ marginBottom: '1.5rem' }}>
           <h2 style={{ fontSize: '1.125rem', fontWeight: 600 }}>Status</h2>
-          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '1rem', background: application?.status === 'complete' ? '#ecfdf5' : '#eff6ff', color: application?.status === 'complete' ? '#10b981' : '#2563eb' }}>
+          <span style={{ padding: '0.25rem 0.75rem', borderRadius: '1rem', background: application?.status === 'complete' ? '#ecfdf5' : '#eff6ff', color: application?.status === 'complete' ? '#10b981' : '#10b981' }}>
             {application?.status}
           </span>
         </div>
@@ -120,7 +120,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
             <ul style={{ listStyle: 'none', padding: 0 }}>
               {documents.map(doc => (
                 <li key={doc.id} style={{ marginBottom: '0.5rem' }}>
-                  <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>{doc.type}</a>
+                  <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline">{doc.type}</a>
                 </li>
               ))}
             </ul>

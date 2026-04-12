@@ -80,9 +80,9 @@ export default function ProfilePage() {
             onChange={e => setProfile({ ...profile, landlord_website: e.target.value })}
             style={{ width: '100%', padding: '0.5rem' }} />
         </label>
-        <button type="submit" style={{ background: '#2563eb', color: '#fff', padding: '0.5rem 1rem', border: 'none', borderRadius: '0.375rem' }}>Save</button>
+        <button type="submit" className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Save</button>
       </form>
-      <p><Link href="/dashboard" style={{ color: '#2563eb' }}>Back to Dashboard</Link></p>
+      <p><Link href="/dashboard" className="text-green-600 hover:underline">Back to Dashboard</Link></p>
     </div>
   )
 }

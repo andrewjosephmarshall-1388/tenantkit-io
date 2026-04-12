@@ -85,7 +85,7 @@ export default function NewPropertyPage() {
           onChange={e => setSecurityDeposit(e.target.value)}
           style={{ padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem' }}
         />
-        <button type="submit" disabled={loading} style={{ background: '#2563eb', color: '#fff', padding: '0.6rem 1rem', border: 'none', borderRadius: '0.375rem', cursor: loading ? 'not-allowed' : 'pointer' }}>
+        <button type="submit" disabled={loading} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded disabled:opacity-50" >
           {loading ? 'Creating…' : 'Create Property & Get Link'}
         </button>
       </form>

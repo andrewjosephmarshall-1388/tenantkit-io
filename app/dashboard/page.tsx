@@ -37,14 +37,14 @@ export default function Dashboard() {
       <div style={{ marginTop: '2rem' }}>
   {/* Simple bar chart */}
   <svg width="100%" height="80" style={{ marginBottom: '1rem' }}>
-    <rect x="10%" y={80 - (stats.properties / Math.max(stats.properties, stats.applications, 1)) * 70} width="30%" height={(stats.properties / Math.max(stats.properties, stats.applications, 1)) * 70} fill="#2563eb" />
+    <rect x="10%" y={80 - (stats.properties / Math.max(stats.properties, stats.applications, 1)) * 70} width="30%" height={(stats.properties / Math.max(stats.properties, stats.applications, 1)) * 70} fill="#10b981" />
     <rect x="60%" y={80 - (stats.applications / Math.max(stats.properties, stats.applications, 1)) * 70} width="30%" height={(stats.applications / Math.max(stats.properties, stats.applications, 1)) * 70} fill="#10b981" />
     <text x="25%" y="78" textAnchor="middle" fill="#333" fontSize="12">Props</text>
     <text x="75%" y="78" textAnchor="middle" fill="#333" fontSize="12">Apps</text>
   </svg>
-  <Link href="/dashboard/properties" style={{ color: '#2563eb' }}>Manage Properties →</Link>
-  <p><Link href="/dashboard/profile" style={{ color: '#2563eb' }}>Edit Profile →</Link></p>
-  <p><Link href="/dashboard/applications" style={{ color: '#2563eb' }}>View All Applications →</Link></p>
+  <Link href="/dashboard/properties" className="text-green-600 hover:underline">Manage Properties →</Link>
+  <p><Link href="/dashboard/profile" className="text-green-600 hover:underline">Edit Profile →</Link></p>
+  <p><Link href="/dashboard/applications" className="text-green-600 hover:underline">View All Applications →</Link></p>
 </div>
     </div>
   )

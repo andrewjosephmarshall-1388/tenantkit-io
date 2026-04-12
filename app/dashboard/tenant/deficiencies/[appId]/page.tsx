@@ -113,7 +113,7 @@ export default function DeficienciesPage({ params }: { params: { appId: string }
 
   return (
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
-      <Link href={`/dashboard/applications/${appId}`} style={{ color: '#2563eb' }}>← Back to Application</Link>
+      <Link href={`/dashboard/applications/${appId}`} className="text-green-600 hover:underline">← Back to Application</Link>
       <h1 style={{ fontSize: '1.5rem', marginTop: '1rem' }}>Report Deficiencies</h1>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
@@ -121,9 +121,9 @@ export default function DeficienciesPage({ params }: { params: { appId: string }
           onChange={e => setDescription(e.target.value)} required style={{ padding: '0.5rem', minHeight: '80px' }} />
         <input type="file" accept="image/*" onChange={e => setPhoto(e.target.files?.[0] ?? null)} />
         {previewUrl && <img src={previewUrl} alt="Preview" style={{ maxWidth: '200px', border: '1px solid #e5e7eb' }} />}
-        {uploading && <p style={{ color: '#2563eb' }}>Uploading… please wait</p>}
+        {uploading && <p className="text-green-600">Uploading… please wait</p>}
         <button type="submit" disabled={uploading}
-          style={{ background: '#2563eb', color: '#fff', padding: '0.5rem 1rem', border: 'none', borderRadius: '0.375rem' }}>Submit Issue</button>
+          className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded disabled:opacity-50">Submit Issue</button>
       </form>
 
       <h2 style={{ fontSize: '1.25rem' }}>Existing Reports</h2>

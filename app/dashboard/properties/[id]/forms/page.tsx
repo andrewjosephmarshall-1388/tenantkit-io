@@ -70,13 +70,13 @@ export default function PropertyFormsPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
-      <Link href="/dashboard/properties" style={{ color: '#2563eb', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>← Back to Properties</Link>
+      <Link href="/dashboard/properties" className="text-green-600 hover:underline inline-block mb-4">← Back to Properties</Link>
       <h1 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Custom Forms for Property</h1>
 
       {error && <div style={{ color: '#B91C1C', marginBottom: '1rem' }}>{error}</div>}
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <label style={{ display: 'inline-flex', alignItems: 'center', background: '#2563eb', color: '#fff', padding: '0.5rem 1rem', borderRadius: '0.375rem', cursor: 'pointer' }}>
+        <label className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded cursor-pointer" >
           <Upload size={16} style={{ marginRight: '0.25rem' }} />
           {uploading ? 'Uploading…' : 'Upload Form'}
           <input type="file" accept=".pdf,.doc,.docx,.txt" style={{ display: 'none' }} onChange={handleUpload} disabled={uploading} />
@@ -90,7 +90,7 @@ export default function PropertyFormsPage() {
           {forms.map(form => (
             <li key={form.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', borderBottom: '1px solid #e5e7eb' }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <FileText size={20} style={{ marginRight: '0.5rem', color: '#2563eb' }} />
+                <FileText size={20} className="mr-2 text-green-600" />
                 <a href={form.url} target="_blank" rel="noopener noreferrer" style={{ color: '#1f2937', textDecoration: 'none' }}>{form.name}</a>
               </div>
               <button onClick={() => deleteForm(form.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}>
