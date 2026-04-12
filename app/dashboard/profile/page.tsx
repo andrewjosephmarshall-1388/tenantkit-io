@@ -1,4 +1,5 @@
 'use client'
+'use dynamic'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import Link from 'next/link'

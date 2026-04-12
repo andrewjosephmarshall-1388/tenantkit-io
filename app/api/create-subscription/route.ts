@@ -2,12 +2,17 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY not configured');
+  return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
 
 export async function POST(req: Request) {
   const { email, priceId } = await req.json();
   if (!email || !priceId) return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
 
+  const stripe = getStripe();
+  
   // Create (or retrieve) a customer in Stripe
   const { data: existing } = await stripe.customers.list({ email, limit: 1 });
   const customer = existing.length ? existing[0] : await stripe.customers.create({ email });
