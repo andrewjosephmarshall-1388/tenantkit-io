@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
-import { v4 as uuidv4 } from 'uuid'
 
 export default function NewPropertyPage() {
   const router = useRouter()
@@ -11,6 +10,7 @@ export default function NewPropertyPage() {
   const [address, setAddress] = useState('')
   const [unit, setUnit] = useState('')
   const [rent, setRent] = useState('')
+  const [securityDeposit, setSecurityDeposit] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [shareLink, setShareLink] = useState('')
@@ -21,39 +21,30 @@ export default function NewPropertyPage() {
     if (!address) return setError('Address is required')
     setLoading(true)
     try {
-      // 1️⃣ Insert property linked to current landlord
       const { data: userData } = await supabase.auth.getUser()
-      const landlordId = userData.user?.id
-      if (!landlordId) throw new Error('Not authenticated')
+      const userId = userData.user?.id
+      if (!userId) throw new Error('Not authenticated')
 
-      const { data: property, error: propErr } = await supabase
-        .from('properties')
-        .insert({
-          landlord_id: landlordId,
+      const res = await fetch(`${window.location.origin}/api/landlord/properties/new`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           address,
           unit,
-          rent: rent ? parseFloat(rent) : null,
+          rent,
+          security_deposit: securityDeposit,
+          userId
         })
-        .select()
-        .single()
-
-      if (propErr) throw propErr
-
-      // 2️⃣ Create an application entry with a unique token
-      const token = uuidv4()
-      const { error: appErr } = await supabase
-        .from('applications')
-        .insert({
-          property_id: property.id,
-          token,
-          status: 'pending',
-        })
-
-      if (appErr) throw appErr
-
-      // 3️⃣ Show the shareable link
-      const base = typeof window !== 'undefined' ? window.location.origin : ''
-      setShareLink(`${base}/apply/${token}`)
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        throw new Error(data.error)
+      }
+      
+      // Show the shareable link
+      setShareLink(`${window.location.origin}/apply/${data.token}`)
     } catch (err: any) {
       setError(err.message || 'Something went wrong')
     }
@@ -85,6 +76,13 @@ export default function NewPropertyPage() {
           placeholder="Monthly rent (optional)"
           value={rent}
           onChange={e => setRent(e.target.value)}
+          style={{ padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem' }}
+        />
+        <input
+          type="number"
+          placeholder="Security deposit (optional)"
+          value={securityDeposit}
+          onChange={e => setSecurityDeposit(e.target.value)}
           style={{ padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem' }}
         />
         <button type="submit" disabled={loading} style={{ background: '#2563eb', color: '#fff', padding: '0.6rem 1rem', border: 'none', borderRadius: '0.375rem', cursor: loading ? 'not-allowed' : 'pointer' }}>

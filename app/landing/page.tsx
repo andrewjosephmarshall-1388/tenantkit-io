@@ -9,9 +9,14 @@ export default function LandingPage() {
       <p style={{ maxWidth: '600px', textAlign: 'center', marginBottom: '2rem' }}>
         A secure portal for landlords to collect all tenant information – ID, income docs, photos, and a custom move‑in checklist – in one place. Generates a polished PDF for easy record‑keeping and lets you charge a small monthly subscription.
       </p>
-      <Link href="/auth/signup" style={{ padding: '0.75rem 1.5rem', background: '#2563eb', color: '#fff', borderRadius: '0.5rem', textDecoration: 'none', fontWeight: 500 }}>
-        Get Started – Free Trial
-      </Link>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+        <Link href="/auth/signup" style={{ padding: '0.75rem 1.5rem', background: '#2563eb', color: '#fff', borderRadius: '0.5rem', textDecoration: 'none', fontWeight: 500 }}>
+          Get Started – Free Trial
+        </Link>
+        <Link href="/auth/login" style={{ padding: '0.75rem 1.5rem', background: '#10b981', color: '#fff', borderRadius: '0.5rem', textDecoration: 'none', fontWeight: 500 }}>
+          Sign In
+        </Link>
+      </div>
     </div>
   )
 }

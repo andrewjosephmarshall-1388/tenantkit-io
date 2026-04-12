@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { FileText, Download } from 'lucide-react'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 import { renderToStream } from '@react-pdf/renderer'
 import { ApplicationPDF } from '../../../components/ApplicationPDF'
 
@@ -61,7 +63,7 @@ export default function ApplicationDetail({ params }: { params: { id: string } }
 
   return (
     <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '1rem' }}>
-      <Link href="/dashboard/properties" style={{ color: '#2563eb', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>← Back to Properties</Link>
+      <Link href="/dashboard/applications" style={{ color: '#2563eb', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>← Back to Applications</Link>
       <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h1 style={{ fontSize: '1.5rem' }}>Application Details</h1>
@@ -80,6 +82,7 @@ export default function ApplicationDetail({ params }: { params: { id: string } }
           >
             <Download size={16} style={{ marginRight: '0.25rem' }} />Download PDF
           </button>
+          <Link href={`/dashboard/tenant/deficiencies/${appId}`} style={{ marginLeft: '0.5rem', background: '#ff8c00', color: '#fff', padding: '0.4rem 0.8rem', borderRadius: '0.375rem', textDecoration: 'none' }}>Report Issue</Link>
         </div>
 
         <div style={{ marginBottom: '1.5rem' }}>
