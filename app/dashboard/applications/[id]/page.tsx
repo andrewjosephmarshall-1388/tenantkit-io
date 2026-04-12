@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
@@ -9,10 +9,10 @@ import { saveAs } from 'file-saver'
 import { renderToStream } from '@react-pdf/renderer'
 import { ApplicationPDF } from '../../../components/ApplicationPDF'
 
-export default function ApplicationDetail({ params }: { params: { id: string } }) {
+export default function ApplicationDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const supabase = createClient()
-  const appId = params.id
+  const { id: appId } = use(params)
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
