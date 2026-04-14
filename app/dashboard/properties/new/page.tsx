@@ -14,6 +14,7 @@ export default function NewPropertyPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [shareLink, setShareLink] = useState('')
+  const [listingLink, setListingLink] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,8 +44,9 @@ export default function NewPropertyPage() {
         throw new Error(data.error)
       }
       
-      // Show the shareable link
+      // Show the shareable links
       setShareLink(`${window.location.origin}/apply/${data.token}`)
+      setListingLink(`${window.location.origin}/listing/${data.propertyId}`)
     } catch (err: any) {
       setError(err.message || 'Something went wrong')
     }
@@ -91,8 +93,14 @@ export default function NewPropertyPage() {
       </form>
       {shareLink && (
         <div style={{ marginTop: '1.5rem', padding: '0.75rem', background: '#f0fdf4', borderRadius: '0.5rem' }}>
-          <p>Share this link with your tenant:</p>
+          <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Application Link (send to tenant):</p>
           <a href={shareLink} target="_blank" rel="noopener noreferrer" style={{ wordBreak: 'break-all', color: '#065f46' }}>{shareLink}</a>
+        </div>
+      )}
+      {listingLink && (
+        <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#eff6ff', borderRadius: '0.5rem' }}>
+          <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Marketing Page (share on Facebook, Craigslist, etc):</p>
+          <a href={listingLink} target="_blank" rel="noopener noreferrer" style={{ wordBreak: 'break-all', color: '#1e40af' }}>{listingLink}</a>
         </div>
       )}
     </div>

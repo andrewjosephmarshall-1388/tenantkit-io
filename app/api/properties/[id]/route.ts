@@ -11,13 +11,16 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: 'Missing env vars' }, { status: 500 })
     }
     
+    // Use public anon key for public listing page
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    
     const response = await fetch(
       `${supabaseUrl}/rest/v1/properties?id=eq.${propertyId}&select=*`,
       {
         headers: {
-          'apikey': serviceKey,
-          'Authorization': `Bearer ${serviceKey}`
-        }
+          'apikey': serviceKey || anonKey || '',
+          'Authorization': `Bearer ${serviceKey || anonKey || ''}`
+        } as any
       }
     )
     

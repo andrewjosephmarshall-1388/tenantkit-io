@@ -1,15 +1,16 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Check } from 'lucide-react'
 
 const PLANS = [
   {
-    id: 'price_Basic', // replace with real Stripe price ID
-    name: 'Basic',
-    price: 9.99,
-    interval: 'month',
+    id: 'free',
+    name: 'Free',
+    price: 0,
+    interval: 'forever',
     features: [
       'Up to 5 active properties',
       'Unlimited tenant applications',
@@ -17,29 +18,16 @@ const PLANS = [
       'Email support',
     ],
   },
-  {
-    id: 'price_Pro', // replace with real Stripe price ID
-    name: 'Pro',
-    price: 49.00,
-    interval: 'month',
-    features: [
-      'Unlimited properties',
-      'Unlimited tenant applications',
-      'PDF export for each application',
-      'Priority support',
-      'Custom branding on PDFs',
-      'White‑label domain',
-    ],
-  },
 ]
 
 export default function PricingPage() {
+  const router = useRouter()
   const supabase = createClient()
   const [loading, setLoading] = useState<string | null>(null)
   const [error, setError] = useState('')
 
-  const handleSubscribe = async (priceId: string) => {
-    setLoading(priceId)
+  const handleSubscribe = async () => {
+    setLoading('free')
     setError('')
 
     try {
@@ -51,23 +39,8 @@ export default function PricingPage() {
         return
       }
 
-      const res = await fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user.email, priceId }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to create checkout session')
-      }
-
-      // Redirect to Stripe Checkout
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        throw new Error('No checkout URL returned')
-      }
+      // Free plan - just redirect to dashboard
+      router.push('/dashboard')
     } catch (err: any) {
       setError(err.message || 'Something went wrong')
     }
@@ -104,7 +77,7 @@ export default function PricingPage() {
               ))}
             </ul>
             <button
-              onClick={() => handleSubscribe(plan.id)}
+              onClick={() => handleSubscribe()}
               disabled={loading !== null}
               style={{
                 width: '100%',
@@ -115,10 +88,10 @@ export default function PricingPage() {
                 borderRadius: '0.375rem',
                 fontWeight: 600,
                 cursor: loading !== null ? 'not-allowed' : 'pointer',
-                opacity: loading === plan.id ? 0.7 : 1,
+                opacity: loading === 'free' ? 0.7 : 1,
               }}
             >
-              {loading === plan.id ? 'Redirecting…' : `Subscribe – $${plan.price}`}
+              {loading === 'free' ? 'Redirecting…' : 'Get Started — Free'}
             </button>
           </div>
         ))}
