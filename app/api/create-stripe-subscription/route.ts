@@ -83,15 +83,15 @@ async function getOrCreateStripePrice(amountInCents: number, interval: 'day' | '
     // Search for existing prices matching the amount and interval
     const prices = await stripe.prices.list({
       recurring: { interval: interval },
-      unit_amount: amountInCents,
       currency: 'usd',
       active: true,
-      limit: 1, // We only need one price
+      limit: 10,
     });
 
-    if (prices.data.length > 0) {
-      // Found an existing price
-      return prices.data[0].id;
+    // Find a price matching our amount
+    const matchingPrice = prices.data.find(p => p.unit_amount === amountInCents);
+    if (matchingPrice) {
+      return matchingPrice.id;
     }
 
     // If no price found, create a new one
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Return the session ID for the frontend to redirect
-        return NextResponse.json({ sessionId: session.id });
+        return NextResponse.json({ sessionId: session.id, url: session.url });
 
     } else if (paymentType === 'background_check') {
         // Handle one-time payment for background check using the previous logic

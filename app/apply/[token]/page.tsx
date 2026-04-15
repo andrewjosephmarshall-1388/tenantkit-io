@@ -105,23 +105,19 @@ export default function TenantApplication() {
           })
         });
 
-        const { sessionId, error: stripeError } = await response.json();
+        const { sessionId, url, error: stripeError } = await response.json();
         if (stripeError) {
           throw new Error(`Stripe API error: ${stripeError}`);
         }
-        if (!sessionId) {
-          throw new Error('Failed to get Stripe session ID.');
+        if (!sessionId && !url) {
+          throw new Error('Failed to get Stripe session.');
         }
 
-        const stripe = await stripePromise;
-        const { error: redirectError } = await stripe!.redirectToCheckout({ sessionId });
-        
-        if (redirectError) {
-          console.error('Stripe redirect error:', redirectError);
-          throw new Error(redirectError.message || 'Failed to redirect to Stripe.');
+        // Redirect to Stripe checkout
+        if (url) {
+          window.location.href = url;
+          return;
         }
-        // If redirect successful, the function will exit here. If it fails, the error will be caught.
-        return; // Important: Exit function after initiating redirect
       }
 
       // --- Regular Application Submission (if background check is not selected) ---

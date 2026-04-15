@@ -198,9 +198,13 @@ export default function TenantDashboard() {
                        throw new Error(errorMessage);
                     }
 
-                    const { sessionId } = data; // Expects sessionId from both endpoints
-                    const stripe = await stripePromise;
-                    await stripe?.redirectToCheckout({ sessionId });
+                    const { sessionId, url } = data; // Expects sessionId and url from both endpoints
+                    if (url) {
+                      window.location.href = url;
+                    } else if (sessionId) {
+                      // Fallback - redirect to Stripe using session ID if url not available
+                      window.location.href = `/api/application/checkout-session?sessionId=${sessionId}`;
+                    }
 
                   } catch (error: any) {
                     console.error('Error initiating payment:', error);

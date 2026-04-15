@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       // Payout logic will be handled separately or via webhooks
     });
 
-    return NextResponse.json({ sessionId: session.id });
+    return NextResponse.json({ sessionId: session.id, url: session.url });
   } catch (error: any) {
     console.error('Stripe Checkout Session Error:', error);
     return NextResponse.json({ error: `Failed to create checkout session: ${error.message}` }, { status: 500 });

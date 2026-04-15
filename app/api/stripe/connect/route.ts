@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     // 1. Check if landlord already has a Stripe Connect account linked
     const { data: landlordData, error: dbError } = await supabase
       .from('landlords') // Assuming you have a 'landlords' table or similar
-      .select('stripe_connected_account_id')
+      .select('stripe_connected_account_id, email')
       .eq('user_id', userId) // Link to your auth user ID
       .single();
 
@@ -47,8 +47,6 @@ export async function POST(request: NextRequest) {
         // Define capabilities needed: card payments, bank transfers, etc.
         card_payments: { requested: true },
         transfers: { requested: true },
-        // Add other capabilities as needed, e.g., for ACH
-        us_bank_account_verification: { requested: true },
       },
       // Optional: metadata to link back to your user ID
       metadata: {

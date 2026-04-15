@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
         case 'invoice.payment_succeeded':
           // This event signifies a successful recurring/subscription payment.
           const invoice = event.data.object as Stripe.Invoice;
-          const subscriptionId = invoice.subscription as string;
+          const subscriptionId = (invoice as any).subscription as string;
           const stripeCustomerId = invoice.customer as string;
           const amountPaid = invoice.amount_paid; // In cents
 
