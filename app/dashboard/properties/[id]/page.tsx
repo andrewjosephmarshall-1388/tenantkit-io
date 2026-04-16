@@ -14,11 +14,17 @@ export default function PropertyDetailPage() {
   const [application, setApplication] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [paymentLoading, setPaymentLoading] = useState(false)
+  const [paymentLink, setPaymentLink] = useState<string | null>(null)
+  const [tenantInfo, setTenantInfo] = useState({ name: '', email: '', amount: '' })
+  const [userId, setUserId] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return setError('Not authenticated')
+      setUserId(user.id)
 
       const res = await fetch(`${window.location.origin}/api/landlord/properties?userId=${user.id}`)
       const data = await res.json()
@@ -70,6 +76,102 @@ export default function PropertyDetailPage() {
             Manage Forms
           </Link>
         </div>
+
+        <div style={{ marginTop: '1.5rem' }}>
+          <button 
+            onClick={() => setShowPaymentModal(true)}
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+          >
+            Request Payment
+          </button>
+        </div>
+
+        {showPaymentModal && (
+          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f3f4f6', borderRadius: '0.5rem' }}>
+            <h3 style={{ fontWeight: 600, marginBottom: '1rem' }}>Send Payment Request</h3>
+            <div style={{ marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem' }}>Tenant Name</label>
+              <input 
+                type="text" 
+                value={tenantInfo.name}
+                onChange={(e) => setTenantInfo({ ...tenantInfo, name: e.target.value })}
+                style={{ width: '100%', padding: '0.5rem', borderRadius: '0.25rem', border: '1px solid #d1d5db' }}
+              />
+            </div>
+            <div style={{ marginBottom: '0.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem' }}>Tenant Email</label>
+              <input 
+                type="email" 
+                value={tenantInfo.email}
+                onChange={(e) => setTenantInfo({ ...tenantInfo, email: e.target.value })}
+                style={{ width: '100%', padding: '0.5rem', borderRadius: '0.25rem', border: '1px solid #d1d5db' }}
+              />
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={{ display: 'block', fontSize: '0.875rem' }}>Amount ($)</label>
+              <input 
+                type="number" 
+                value={tenantInfo.amount}
+                onChange={(e) => setTenantInfo({ ...tenantInfo, amount: e.target.value })}
+                style={{ width: '100%', padding: '0.5rem', borderRadius: '0.25rem', border: '1px solid #d1d5db' }}
+                placeholder={String(property?.rent || '')}
+              />
+            </div>
+            {paymentLink ? (
+              <div>
+                <p style={{ color: '#10B981', fontWeight: 600, marginBottom: '0.5rem' }}>Payment link created!</p>
+                <a href={paymentLink} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline', wordBreak: 'break-all' }}>
+                  {paymentLink}
+                </a>
+                <button 
+                  onClick={() => { setPaymentLink(null); setTenantInfo({ name: '', email: '', amount: '' }); }}
+                  style={{ marginLeft: '1rem', color: '#6b7280' }}
+                >
+                  Create another
+                </button>
+              </div>
+            ) : (
+              <button 
+                onClick={async () => {
+                  setPaymentLoading(true)
+                  try {
+                    const res = await fetch('/api/landlord/payment-requests', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        userId,
+                        propertyId,
+                        tenantEmail: tenantInfo.email,
+                        tenantName: tenantInfo.name,
+                        amount: tenantInfo.amount || property?.rent,
+                      })
+                    })
+                    const data = await res.json()
+                    if (data.paymentLink) {
+                      setPaymentLink(data.paymentLink)
+                    } else {
+                      setError(data.error || 'Failed to create payment request')
+                    }
+                  } catch (e: any) {
+                    setError(e.message)
+                  } finally {
+                    setPaymentLoading(false)
+                  }
+                }}
+                disabled={paymentLoading}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-50"
+              >
+                {paymentLoading ? 'Creating...' : 'Create Payment Link'}
+              </button>
+            )}
+            <button 
+              onClick={() => { setShowPaymentModal(false); setPaymentLink(null); }}
+              style={{ marginLeft: '1rem', color: '#6b7280' }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
