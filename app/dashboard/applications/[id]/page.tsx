@@ -20,6 +20,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
   const [property, setProperty] = useState<any>(null)
   const [items, setItems] = useState<any[]>([])
   const [documents, setDocuments] = useState<any[]>([])
+  const [uploadingReport, setUploadingReport] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
@@ -82,6 +83,34 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
           >
             <Download size={16} style={{ marginRight: '0.25rem' }} />Download PDF
           </button>
+          <label className="ml-2 bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 rounded cursor-pointer inline-block">
+            {uploadingReport ? 'Uploading...' : 'Upload Report'}
+            <input type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" className="hidden" style={{ display: 'none' }}
+              onChange={async (e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                setUploadingReport(true)
+                try {
+                  const formData = new FormData()
+                  formData.append('file', file)
+                  formData.append('applicationId', appId)
+                  const res = await fetch('/api/landlord/upload-report', {
+                    method: 'POST',
+                    body: formData
+                  })
+                  const data = await res.json()
+                  if (data.url) {
+                    setApplication((prev: any) => ({ ...prev, inspection_report_url: data.url }))
+                  } else {
+                    setError(data.error || 'Upload failed')
+                  }
+                } catch (err) {
+                  setError('Upload failed')
+                }
+                setUploadingReport(false)
+              }}
+            />
+          </label>
           <Link href={`/dashboard/tenant/inspection/${appId}`} className="ml-2 bg-orange-600 hover:bg-orange-700 text-white py-1 px-2 rounded">Move‑In Inspection</Link>
         </div>
 
@@ -97,6 +126,15 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
             {application?.status}
           </span>
         </div>
+
+        {application?.inspection_report_url && (
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 600 }}>Inspection Report</h2>
+            <a href={application.inspection_report_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-2">
+              <FileText size={16} /> View Report
+            </a>
+          </div>
+        )}
 
         <div style={{ marginBottom: '1.5rem' }}>
           <h2 style={{ fontSize: '1.125rem', fontWeight: 600 }}>Checklist Items</h2>
