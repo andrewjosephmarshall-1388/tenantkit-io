@@ -49,12 +49,6 @@ export async function POST(request: NextRequest) {
         },
         quantity: 1,
       }],
-      payment_intent_data: {
-        application_fee_amount: 0,
-        transfer_data: {
-          destination: landlord.stripe_connected_account_id,
-        },
-      },
       metadata: {
         property_id: propertyId,
         landlord_id: landlord.id,

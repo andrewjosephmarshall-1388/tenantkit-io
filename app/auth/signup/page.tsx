@@ -1,29 +1,27 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 
 export default function SignupPage() {
   const router = useRouter()
-  const [supabase, setSupabase] = useState<any>(null)
   const [initError, setInitError] = useState('')
   const [formData, setFormData] = useState({ name: '', email: '', password: '', companyName: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  // Initialize Supabase client - updated deployment
-  useEffect(() => {
+  // Initialize Supabase client lazily (synchronous)
+  const supabase = (() => {
     try {
-      const client = createClient()
-      setSupabase(client)
-      console.log('Supabase client initialized')
+      return createClient()
     } catch (err: any) {
       console.error('Failed to init Supabase:', err)
       setInitError(err.message)
+      return null
     }
-  }, [])
+  })()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -108,10 +106,10 @@ export default function SignupPage() {
         {success ? (
           <div className="success-message">
             <h2>Check your email!</h2>
-            <p>We've sent a confirmation link to <strong>{formData.email}</strong>.</p>
+            <p>We&apos;ve sent a confirmation link to <strong>{formData.email}</strong>.</p>
             <p>Click the link to activate your account.</p>
             <p className="resend-note">
-              Didn't receive it? Check your spam folder, or{' '}
+              Didn&apos;t receive it? Check your spam folder, or{' '}
               <Link href="/auth/login">try again</Link>.
             </p>
           </div>

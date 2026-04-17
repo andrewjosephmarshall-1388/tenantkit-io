@@ -11,10 +11,6 @@ export default function ApplicationsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
   const loadData = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return setError('Please log in to view applications')
@@ -29,6 +25,10 @@ export default function ApplicationsPage() {
     }
     setLoading(false)
   }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   const getStatusIcon = (status: string) => {
     switch (status) {

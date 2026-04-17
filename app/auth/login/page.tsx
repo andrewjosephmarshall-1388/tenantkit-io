@@ -1,26 +1,26 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [supabase, setSupabase] = useState<any>(null)
   const [initError, setInitError] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
+  // Initialize Supabase client lazily; createClient is synchronous
+  const supabase = (() => {
     try {
-      const client = createClient()
-      setSupabase(client)
+      return createClient()
     } catch (err: any) {
       setInitError(err.message)
+      return null
     }
-  }, [])
+  })()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -106,7 +106,7 @@ export default function LoginPage() {
           <Link href="/auth/forgot-password" className="forgot-link">Forgot password?</Link>
         </p>
         <p className="auth-footer">
-          Don't have an account? <Link href="/auth/signup">Sign up</Link>
+          Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
         </p>
       </div>
 

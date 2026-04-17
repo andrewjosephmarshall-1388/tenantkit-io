@@ -17,10 +17,6 @@ export default function PropertiesPage() {
   const [editForm, setEditForm] = useState({ address: '', unit: '', rent: '', securityDeposit: '' })
   const [saving, setSaving] = useState(false)
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
   const loadData = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return setError('Not authenticated')
@@ -35,6 +31,10 @@ export default function PropertiesPage() {
     }
     setLoading(false)
   }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   const startEdit = (prop: any) => {
     setEditingId(prop.id)

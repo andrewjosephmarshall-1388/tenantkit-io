@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   try {
     // If it's a background check, we'll need its ID to link it later.
     // For rent, we might link it to a subscription or a rent payment record.
-    let stripeMetadata = metadata || {};
+    const stripeMetadata = metadata || {};
     if (metadata?.type === 'background_check') {
       stripeMetadata.applicationId = metadata.applicationId;
     } else if (metadata?.type === 'rent') {
