@@ -111,7 +111,10 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
               }}
             />
           </label>
-          <Link href={`/dashboard/tenant/inspection/${appId}`} className="ml-2 bg-orange-600 hover:bg-orange-700 text-white py-1 px-2 rounded">Move‑In Inspection</Link>
+          <Link href={`/dashboard/tenant/inspection/${appId}`} className="ml-2 bg-orange-600 hover:bg-orange-700 text-white py-1 px-2 rounded">Tenant Inspection</Link>
+          <Link href={`/dashboard/landlord/inspection/${appId}`} className="ml-2 bg-green-600 hover:bg-green-700 text-white py-1 px-2 rounded">
+            {application?.landlord_inspection_completed ? '✓' : ''} Landlord Inspection
+          </Link>
         </div>
 
         <div style={{ marginBottom: '1.5rem' }}>
