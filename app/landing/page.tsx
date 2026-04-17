@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase'
 
 export default function LandingPage() {
   return (
