@@ -1,26 +1,23 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 
 export default function LoginPage() {
-  const router = useRouter()
+  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
   const [initError, setInitError] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Initialize Supabase client lazily; createClient is synchronous
-  const supabase = (() => {
+  useEffect(() => {
     try {
-      return createClient()
-    } catch (err: any) {
-      setInitError(err.message)
-      return null
+      setSupabase(createClient())
+    } catch (err: unknown) {
+      setInitError(err instanceof Error ? err.message : 'Failed to initialize')
     }
-  })()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

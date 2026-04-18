@@ -35,7 +35,7 @@ export default function TermsPage() {
 
       <section style={{ marginTop: '1.5rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}>6. Limitation of Liability</h2>
-        <p>TenantKit is provided "as is" without warranties of any kind. We shall not be liable for any indirect, incidental, or consequential damages.</p>
+        <p>TenantKit is provided &quot;as is&quot; without warranties of any kind. We shall not be liable for any indirect, incidental, or consequential damages.</p>
       </section>
 
       <section style={{ marginTop: '1.5rem' }}>

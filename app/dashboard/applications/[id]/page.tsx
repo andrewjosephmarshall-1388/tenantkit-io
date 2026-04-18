@@ -1,16 +1,12 @@
 'use client'
 import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { FileText, Download } from 'lucide-react'
-import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
 import { renderToStream } from '@react-pdf/renderer'
 import { ApplicationPDF } from '../../../components/ApplicationPDF'
 
 export default function ApplicationDetail({ params }: { params: Promise<{ id: string }> }) {
-  const router = useRouter()
   const supabase = createClient()
   const { id: appId } = use(params)
 
@@ -57,7 +53,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
       setLoading(false)
     }
     fetch()
-  }, [appId])
+  }, [appId, supabase])
 
   if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading…</div>
   if (error) return <div style={{ color: '#B91C1C', padding: '2rem' }}>{error}</div>
@@ -104,7 +100,7 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
                   } else {
                     setError(data.error || 'Upload failed')
                   }
-                } catch (err) {
+                } catch {
                   setError('Upload failed')
                 }
                 setUploadingReport(false)

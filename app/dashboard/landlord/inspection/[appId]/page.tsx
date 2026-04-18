@@ -35,7 +35,7 @@ export default function LandlordInspectionPage({ params }: { params: Promise<{ a
       setLoading(false)
     }
     fetch()
-  }, [appId])
+  }, [appId, supabase])
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

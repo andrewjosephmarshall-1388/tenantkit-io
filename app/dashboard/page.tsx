@@ -19,7 +19,7 @@ export default function Dashboard() {
       })
     }
     fetchData()
-  }, [])
+  }, [supabase])
 
   return (
     <div>

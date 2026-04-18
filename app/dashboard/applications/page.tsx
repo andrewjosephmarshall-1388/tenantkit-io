@@ -1,9 +1,9 @@
 'use client'
 'use dynamic'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
-import { FileText, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { CheckCircle, XCircle, Clock } from 'lucide-react'
 
 export default function ApplicationsPage() {
   const supabase = createClient()
@@ -11,7 +11,7 @@ export default function ApplicationsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return setError('Please log in to view applications')
     
@@ -24,11 +24,11 @@ export default function ApplicationsPage() {
       setApplications(data.applications || [])
     }
     setLoading(false)
-  }
+  }, [supabase])
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [loadData])
 
   const getStatusIcon = (status: string) => {
     switch (status) {

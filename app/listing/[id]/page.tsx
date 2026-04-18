@@ -22,7 +22,7 @@ export default function PropertyListing() {
         } else {
           setProperty(data[0])
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load property')
       }
       setLoading(false)

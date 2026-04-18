@@ -51,7 +51,7 @@ export default function DeficienciesPage({ params }: { params: { appId: string }
       setLoading(false)
     }
     fetch()
-  }, [appId])
+  }, [appId, supabase])
 
   // preview selected photo
   useEffect(() => {

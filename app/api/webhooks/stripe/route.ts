@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
           // Check metadata to differentiate payment types
           const paymentType = checkoutSessionCompleted.metadata?.paymentType;
           const sessionId = checkoutSessionCompleted.id;
-          const customerEmail = checkoutSessionCompleted.customer_email;
           const amountReceived = checkoutSessionCompleted.amount_total; // In cents
 
           if (paymentType === 'background_check') {

@@ -1,12 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useRouter, useParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { Upload, FileText, Trash2 } from 'lucide-react'
 
 export default function PropertyFormsPage() {
-  const router = useRouter()
   const { id: propertyId } = useParams()
   const supabase = createClient()
   const [forms, setForms] = useState<any[]>([])
@@ -25,7 +24,7 @@ export default function PropertyFormsPage() {
       setLoading(false)
     }
     fetchForms()
-  }, [propertyId])
+  }, [propertyId, supabase])
 
   // handle file upload
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

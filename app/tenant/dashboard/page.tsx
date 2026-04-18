@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { loadStripe } from '@stripe/stripe-js'
 
 const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
@@ -14,7 +13,6 @@ export default function TenantDashboard() {
   // State for payment type selection (one-time rent or recurring subscription)
   const [paymentType, setPaymentType] = useState<'rent' | 'rent_subscription'>('rent_subscription'); // Default to recurring
   
-  const [issues, setIssues] = useState<any[]>([])
   const [showIssueForm, setShowIssueForm] = useState(false)
   const [issueForm, setIssueForm] = useState({ title: '', description: '' })
   const [loading, setLoading] = useState<string | null>(null) // Use string to indicate loading step/type

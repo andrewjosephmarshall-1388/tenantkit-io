@@ -1,12 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 
 export default function PropertyDetailPage() {
   const params = useParams()
-  const router = useRouter()
   const supabase = createClient()
   const propertyId = params.id as string
 
@@ -43,7 +42,7 @@ export default function PropertyDetailPage() {
       setLoading(false)
     }
     fetchData()
-  }, [propertyId])
+  }, [propertyId, supabase])
 
   if (loading) return <div style={{ padding: '2rem' }}>Loading…</div>
   if (error) return <div style={{ color: '#B91C1C', padding: '2rem' }}>{error}</div>

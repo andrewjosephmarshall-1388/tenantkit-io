@@ -1,14 +1,11 @@
 'use client'
 'use dynamic'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
-import { v4 as uuidv4 } from 'uuid'
 import { Plus, Edit, Trash2 } from 'lucide-react'
 
 export default function PropertiesPage() {
-  const router = useRouter()
   const supabase = createClient()
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -17,7 +14,7 @@ export default function PropertiesPage() {
   const [editForm, setEditForm] = useState({ address: '', unit: '', rent: '', securityDeposit: '' })
   const [saving, setSaving] = useState(false)
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return setError('Not authenticated')
     
@@ -30,11 +27,11 @@ export default function PropertiesPage() {
       setProperties(data.properties || [])
     }
     setLoading(false)
-  }
+  }, [supabase])
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [loadData])
 
   const startEdit = (prop: any) => {
     setEditingId(prop.id)

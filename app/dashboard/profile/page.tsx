@@ -30,7 +30,7 @@ export default function ProfilePage() {
       setLoading(false)
     }
     fetchProfile()
-  }, [])
+  }, [supabase])
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
