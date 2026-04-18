@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <Link href="/dashboard" style={{ color: '#fff', textDecoration: 'none' }}>Dashboard</Link>
           <Link href="/dashboard/properties" style={{ color: '#fff', textDecoration: 'none' }}>Properties</Link>
-          <Link href="/pricing" style={{ color: '#fff', textDecoration: 'none' }}>Pricing</Link>
+          <Link href="/dashboard/settings" style={{ color: '#fff', textDecoration: 'none' }}>Settings</Link>
         </nav>
       </aside>
       <main style={{ flex: 1, padding: '2rem' }}>{children}</main>
