@@ -20,7 +20,7 @@ export default function LandingPage() {
       <div style={{ marginTop: '3rem', display: 'flex', gap: '1.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
         <Link href="/terms" style={{ color: '#6b7280' }}>Terms of Service</Link>
         <Link href="/privacy" style={{ color: '#6b7280' }}>Privacy Policy</Link>
-        <a href="mailto:support@tenantkit.io" style={{ color: '#6b7280' }}>Contact</a>
+        <a href="mailto:support@test.tenant-kit.com" style={{ color: '#6b7280' }}>Contact</a>
       </div>
     </div>
   )

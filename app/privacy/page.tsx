@@ -56,7 +56,7 @@ export default function PrivacyPage() {
 
       <section style={{ marginTop: '1.5rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}>7. Contact</h2>
-        <p>If you have questions about this Privacy Policy, please contact us at support@tenantkit.io</p>
+        <p>If you have questions about this Privacy Policy, please contact us at support@test.tenant-kit.com</p>
       </section>
     </div>
   )

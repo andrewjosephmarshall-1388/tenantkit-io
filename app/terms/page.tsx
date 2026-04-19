@@ -29,6 +29,11 @@ export default function TermsPage() {
       </section>
 
       <section style={{ marginTop: '1.5rem' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}>4.1 Refund Policy</h2>
+        <p>We offer full refunds within the first 30 days of service if you're not satisfied. After 30 days, subscriptions are non-refundable but can be cancelled at any time to stop future billing. To request a refund, contact support@test.tenant-kit.com.</p>
+      </section>
+
+      <section style={{ marginTop: '1.5rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}>5. User Content</h2>
         <p>You retain ownership of any content you upload to TenantKit. By uploading content, you grant us license to use it for operating the service.</p>
       </section>
@@ -40,7 +45,7 @@ export default function TermsPage() {
 
       <section style={{ marginTop: '1.5rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}>7. Contact</h2>
-        <p>If you have questions about these terms, please contact us at support@tenantkit.io</p>
+        <p>If you have questions about these terms, please contact us at support@test.tenant-kit.com</p>
       </section>
     </div>
   )
