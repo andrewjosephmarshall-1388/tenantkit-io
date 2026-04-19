@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "TenantKit - Tenant Management Made Easy",
   description: "A secure portal for landlords to collect tenant information, process rent payments, and manage move-in inspections.",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({

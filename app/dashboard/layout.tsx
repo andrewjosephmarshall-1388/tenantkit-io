@@ -24,8 +24,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (loading) return <div style={{ padding: '2rem' }}>Loading…</div>
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <aside style={{ width: '250px', background: '#1f2937', color: '#fff', padding: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .layout { flex-direction: row; }
+          .sidebar { width: 250px; }
+        }
+      `}</style>
+      <aside className="sidebar" style={{ background: '#1f2937', color: '#fff', padding: '1rem' }}>
         <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>TenantKit</h2>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <Link href="/dashboard" style={{ color: '#fff', textDecoration: 'none' }}>Dashboard</Link>
@@ -33,7 +39,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/dashboard/settings" style={{ color: '#fff', textDecoration: 'none' }}>Settings</Link>
         </nav>
       </aside>
-      <main style={{ flex: 1, padding: '2rem' }}>{children}</main>
+      <main className="layout" style={{ flex: 1, padding: '1rem' }}>{children}</main>
     </div>
   )
 }
