@@ -40,6 +40,16 @@ export async function POST(request: NextRequest) {
       .eq('id', tenant.property_id)
       .single()
     
+    // Get application ID
+    const { data: application } = await supabase
+      .from('applications')
+      .select('id')
+      .eq('tenant_id', tenant.id)
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single()
+    
     return NextResponse.json({ 
       tenant: {
         id: tenant.id,
@@ -53,7 +63,8 @@ export async function POST(request: NextRequest) {
         id: property.id,
         address: property.address,
         rent: property.rent,
-        landlordEmail: property.users?.email
+        landlordEmail: property.users?.email,
+        applicationId: application?.id
       }
     })
   } catch (error: any) {

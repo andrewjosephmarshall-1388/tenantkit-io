@@ -17,6 +17,9 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
   const [items, setItems] = useState<any[]>([])
   const [documents, setDocuments] = useState<any[]>([])
   const [uploadingReport, setUploadingReport] = useState(false)
+  const [messages, setMessages] = useState<any[]>([])
+  const [newMessage, setNewMessage] = useState('')
+  const [sending, setSending] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
@@ -53,7 +56,33 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
       setLoading(false)
     }
     fetch()
+    fetchMessages()
   }, [appId, supabase])
+
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch(`/api/messages?applicationId=${appId}`)
+      const data = await res.json()
+      if (data.messages) setMessages(data.messages)
+    } catch {}
+  }
+
+  const sendMessage = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newMessage.trim()) return
+    setSending(true)
+    try {
+      await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ applicationId: appId, content: newMessage, senderRole: 'landlord' })
+      })
+      setNewMessage('')
+      fetchMessages()
+    } finally {
+      setSending(false)
+    }
+  }
 
   if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading…</div>
   if (error) return <div style={{ color: '#B91C1C', padding: '2rem' }}>{error}</div>
@@ -162,6 +191,35 @@ export default function ApplicationDetail({ params }: { params: Promise<{ id: st
               ))}
             </ul>
           )}
+        </div>
+
+        {/* Chat Section */}
+        <div style={{ marginTop: '2rem', borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem' }}>Messages</h2>
+          <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem', background: '#f9fafb' }}>
+            {messages.length === 0 ? <p style={{ color: '#6b7280' }}>No messages yet.</p> : (
+              messages.map(msg => (
+                <div key={msg.id} style={{ marginBottom: '0.75rem', padding: '0.5rem', borderRadius: '0.5rem', background: msg.sender_role === 'landlord' ? '#dbeafe' : '#f3f4f6', marginLeft: msg.sender_role === 'landlord' ? '2rem' : '0', marginRight: msg.sender_role === 'tenant' ? '2rem' : '0' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>
+                    {msg.sender_role === 'landlord' ? 'Landlord' : 'Tenant'} • {new Date(msg.created_at).toLocaleString()}
+                  </div>
+                  <div>{msg.content}</div>
+                </div>
+              ))
+            )}
+          </div>
+          <form onSubmit={sendMessage} style={{ display: 'flex', gap: '0.5rem' }}>
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type a message..."
+              style={{ flex: 1, padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem' }}
+            />
+            <button type="submit" disabled={sending} className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50">
+              {sending ? 'Sending...' : 'Send'}
+            </button>
+          </form>
         </div>
       </div>
     </div>

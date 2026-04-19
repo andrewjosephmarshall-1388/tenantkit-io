@@ -17,6 +17,9 @@ export default function TenantDashboard() {
   const [issueForm, setIssueForm] = useState({ title: '', description: '' })
   const [loading, setLoading] = useState<string | null>(null) // Use string to indicate loading step/type
   const [submitting, setSubmitting] = useState(false)
+  const [messages, setMessages] = useState<any[]>([])
+  const [newMessage, setNewMessage] = useState('')
+  const [sendingMsg, setSendingMsg] = useState(false)
 
   useEffect(() => {
     // Check if tenant is logged in
@@ -31,6 +34,38 @@ export default function TenantDashboard() {
     setTenant(JSON.parse(tenantData))
     setProperty(JSON.parse(propertyData || '{}'))
   }, [router])
+
+  // Fetch messages when property loads
+  useEffect(() => {
+    if (property?.applicationId) {
+      fetchMessages(property.applicationId)
+    }
+  }, [property])
+
+  const fetchMessages = async (appId: string) => {
+    try {
+      const res = await fetch(`/api/messages?applicationId=${appId}`)
+      const data = await res.json()
+      if (data.messages) setMessages(data.messages)
+    } catch {}
+  }
+
+  const sendMessage = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newMessage.trim() || !property?.applicationId) return
+    setSendingMsg(true)
+    try {
+      await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ applicationId: property.applicationId, content: newMessage, senderRole: 'tenant' })
+      })
+      setNewMessage('')
+      fetchMessages(property.applicationId)
+    } finally {
+      setSendingMsg(false)
+    }
+  }
 
   // Effect to handle loading state after tenant/property data is set
   useEffect(() => {
@@ -289,6 +324,37 @@ export default function TenantDashboard() {
                   Cancel
                 </button>
               </div>
+            </form>
+          </div>
+        )}
+
+        {/* Chat Section */}
+        {property?.applicationId && (
+          <div style={{ marginTop: '2rem', borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem' }}>Messages</h2>
+            <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem', background: '#f9fafb' }}>
+              {messages.length === 0 ? <p style={{ color: '#6b7280' }}>No messages yet.</p> : (
+                messages.map(msg => (
+                  <div key={msg.id} style={{ marginBottom: '0.75rem', padding: '0.5rem', borderRadius: '0.5rem', background: msg.sender_role === 'tenant' ? '#dbeafe' : '#f3f4f6', marginLeft: msg.sender_role === 'tenant' ? '2rem' : '0', marginRight: msg.sender_role === 'landlord' ? '2rem' : '0' }}>
+                    <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>
+                      {msg.sender_role === 'landlord' ? 'Landlord' : 'You'} • {new Date(msg.created_at).toLocaleString()}
+                    </div>
+                    <div>{msg.content}</div>
+                  </div>
+                ))
+              )}
+            </div>
+            <form onSubmit={sendMessage} style={{ display: 'flex', gap: '0.5rem' }}>
+              <input
+                type="text"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type a message..."
+                style={{ flex: 1, padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem' }}
+              />
+              <button type="submit" disabled={sendingMsg} className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50">
+                {sendingMsg ? 'Sending...' : 'Send'}
+              </button>
             </form>
           </div>
         )}
